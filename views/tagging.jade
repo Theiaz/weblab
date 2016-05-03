@@ -4,9 +4,10 @@ block content
  h1 Tagging
  h2 Welcome to #{title}
  p Please insert the name of the location and its hash
-    form(action='', name='myname')
-    p #{name}
-        input(type='text', name='name')
-    p #{hash}
-        input(type='text', name='hash')
- p
+    form(action='tagging', method='post')#geoForm
+      p #{name}
+        input(type='text', name='location-value').messageInput
+      p #{hash}
+        input(type='text', name='hash-value').messageInput
+      input(type='submit', value='OK')
+ script(src='/javascripts/geolocation.js')
