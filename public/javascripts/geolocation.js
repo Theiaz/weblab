@@ -1,11 +1,7 @@
 /**
  * Created by Julian on 29.04.2016.
  */
-var geoOptions = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-};
+
 
 var coordinates = {
     latitude : 0,
@@ -13,19 +9,31 @@ var coordinates = {
     accuracy : 2
 }
 
-function success(pos) {
-    var crd = pos.coords;
-    coordinates.latitude = crd.latitude;
-    coordinates.longitude = crd.longitude;
-};
+// var geoOptions = {
+//     enableHighAccuracy: true,
+//     timeout: 5000,
+//     maximumAge: 0
+// };
+//
+// function success(pos) {
+//     var crd = pos.coords;
+//     coordinates.latitude = crd.latitude;
+//     coordinates.longitude = crd.longitude;
+// };
+//
+// function error(err) {
+//     console.warn('ERROR(' + err.code + '): ' + err.message);
+// };
 
-function error(err) {
-    console.warn('ERROR(' + err.code + '): ' + err.message);
-};
-
-function ermittlePosition() {
+function getGeoPosition() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error, geoOptions);
+        console.log("getGeoPosition")
+        navigator.geolocation.getCurrentPosition(function(position) {
+            coordinates.latitude = position.coords.latitude;
+            coordinates.longitude = position.coords.longitude;
+            coordinates.accuracy = position.coords.accuracy;
+            console.log("coordinate updated")
+        });
     } else {
         ausgabe.innerHTML = 'Ihr Browser unterstützt keine Geolocation.';
     }
@@ -33,6 +41,7 @@ function ermittlePosition() {
 
 // Formular per asynchronem Ajax Aufruf senden
 function sendAjaxAsync(event) {
+    getGeoPosition();
     //submit unterbrechen
     event.preventDefault();
 
@@ -63,6 +72,12 @@ function sendAjaxAsync(event) {
                 var longitudeElement = document.getElementById("longitude");
                 longitudeElement.innerHTML = "Longitude: ";
                 longitudeElement.innerHTML = longitudeElement.innerHTML + coordinates.longitude;
+
+                var img = document.getElementById("geoImage");
+                img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + coordinates.latitude + "," + coordinates.longitude + "&zoom=13&size=300x300&sensor=false";
+                // img.appendChild(img);
+
+                console.log("coordElements updated")
             } else {
                 alert("Ein Fehler ist aufgetreten: " + request.statusText);
             }
@@ -72,7 +87,6 @@ function sendAjaxAsync(event) {
 
 
 $(document).ready(function() {
-    $("#geoForm").bind("submit", ermittlePosition);
     $("#geoForm").bind("submit", sendAjaxAsync);
 });
 
