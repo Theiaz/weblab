@@ -6,8 +6,10 @@ block content
  p Please insert the name of the location and its hash
     form(action='tagging', method='post')#geoForm
       p #{name}
-        input(type='text', name='location-value').messageInput
+        input(type='text', name='location-value').locationInput
       p #{hash}
-        input(type='text', name='hash-value').messageInput
-      input(type='submit', value='OK')
+        input(type='text', name='hash-value').hashInput
+      input(type='submit', value='Get Position')
+      p#latitude #{latitude}
+      P#longitude #{longitude}
  script(src='/javascripts/geolocation.js')
