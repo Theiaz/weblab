@@ -2,4 +2,26 @@ extends layout
 
 block content
   h1 Discovery
-  h2 Welcome to Discovery
+  h2 Welcome to #{title}
+  //Input field mit jeweils eingabe für Stichwort/Hashtag
+  //TODO Output = searchterm
+  p Search for your location:
+    form(action='discovery-search', method='post')#searchForm
+      input(type='search', name='location-value').searchInput
+      input(type='submit', value='Search')
+  //Liste aller verfügbaren objekte (Input:locations-array)
+  //TODO Filter für Objekte in naher Umgebung
+  p This table shows all locations
+  #locations
+  table
+    tr
+      th Location
+      th Hash
+      th Latitude
+      th Longitude
+    each location in locations
+      tr
+        td #{location.name}
+        td #{location.hash}
+        td #{location.lat}
+        td #{location.long}
